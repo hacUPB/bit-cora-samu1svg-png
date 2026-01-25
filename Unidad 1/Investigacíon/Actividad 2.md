@@ -12,5 +12,5 @@
  ¿Qué instrucciones se ejecutan en cada ciclo Fetch-Decode-Execute?
 
  todas, primero se obtiene lo que esta en el  registro pc seleccionado, luego lo decodifica y por ultimo se hace la operación indicada que es el Execute.
-
+ un saludo A LA GRASAAAAAAAA
  
