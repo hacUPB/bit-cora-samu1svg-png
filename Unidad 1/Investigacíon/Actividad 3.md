@@ -5,7 +5,7 @@ que se puede usar para comparar valores, verificar los limites o tomar decisione
 ## ¿Para qué sirve el registro PC?
 para indicar cual es la siguiente instruccion que se debe ejecutar en la cpu
 ##  ¿Cuál es la diferencia entre @i y @READKEYBOARD?
-la @i se usa para almacenar datos mientras que el @READKEYBOARD  para controlar el flujo del programa como los saltos y bucles
+la @i se usa para almacenar datos y busca el espacio en la RAM se al mientras que el @READKEYBOARD  para controlar el flujo del programa como los saltos y bucles y busca el espacio en la ROM
 ##  Describe qué se necesita para leer el teclado y mostrar información en la pantalla.
  - para leer el teclado se necesita acceder al registro especial de KBD leer los valores desde su memoria y compararse con cero  para saber si hay una tecla presionada 
  - para mostrar infomación en pantalla se necesita  acceder a la memoria de video  usando SCREEN 
