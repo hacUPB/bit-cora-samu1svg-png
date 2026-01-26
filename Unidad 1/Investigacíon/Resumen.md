@@ -6,7 +6,9 @@ en el programa ensamblador Hack mostrado en clase.
 ---
 
 ## 🖥️ SCREEN
-
+- Un bloque de memoria de 512x256 pixeles.(contando los ceros)
+- 
+- pertenece a la memoria RAM
 - Símbolo predefinido del computador Hack.
 - Dirección de memoria: `16384`.
 - Representa el inicio de la memoria de video.
