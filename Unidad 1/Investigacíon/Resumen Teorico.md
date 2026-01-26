@@ -3,6 +3,15 @@
 Este documento define los conceptos, símbolos e instrucciones que aparecen
 en el programa ensamblador Hack mostrado en clase.
 
+## RAM (Memoria de Acceso Aleatorio):
+- Es la memoria principal de la computadora donde se almacenan temporalmente los datos y programas que el CPU está utilizando en ese momento. Su contenido se borra cuando se apaga la computadora.
+
+## ROM (Memoria de Solo Lectura):
+- Es una memoria que almacena información permanente e importante para el arranque del sistema. Su contenido no se pierde aunque la computadora se apague.
+
+## ALU (Unidad Aritmético-Lógica):
+- Es la parte del CPU encargada de realizar operaciones matemáticas (como sumas y restas) y operaciones lógicas (como comparaciones entre datos).
+
 ---
 
 ## 🖥️ SCREEN
@@ -34,7 +43,9 @@ Comportamiento:
 ---
 
 ## 🔢 Variable `i`
-
+- tiene el valor numero 16 del registro
+ej:
+@i = casillero 16
 - Variable definida por el programador.
 - Se almacena en la memoria RAM.
 - Usada como:
@@ -45,6 +56,18 @@ Comportamiento:
 Puede incrementarse o decrementarse.
 
 ---
+## Variable ¨SUM¨
+- tiene el valor numero 17 del registro
+ej:
+@SUM = casillero 17
+
+de ahi puede tomas valores hasta el valor 16383
+- Variable definida por el programador.
+- Se almacena en la memoria RAM.
+- Usada como:
+  - Contador
+  - Puntero de posición
+  - Referencia a una dirección de pantalla
 
 ## 🧠 Registro A
 
