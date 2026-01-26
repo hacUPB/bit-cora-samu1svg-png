@@ -7,7 +7,7 @@ en el programa ensamblador Hack mostrado en clase.
 
 ## 🖥️ SCREEN
 - Un bloque de memoria de 512x256 pixeles.(contando los ceros)
-- 
+- @SCREEN=16384
 - pertenece a la memoria RAM
 - Símbolo predefinido del computador Hack.
 - Dirección de memoria: `16384`.
@@ -21,7 +21,7 @@ Valores comunes:
 ---
 
 ## ⌨️ KBD
-
+- @KBD=24576
 - Símbolo predefinido del computador Hack.
 - Dirección de memoria: `24576`.
 - Representa el registro del teclado.
