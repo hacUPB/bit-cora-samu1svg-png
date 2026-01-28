@@ -14,13 +14,25 @@ Registro D: es un registro de datos temporales
 Registro A: guarda valores numericos o una direccion de memoria
 Alu: es la que se encarga de los procesos aritmeticos
 ### Pregunta 4:
+se hacen con una instrucción c  que incluye una condición (en este caso usaremos JGT)
 (SALTO)
 @10
 D=A     // le asignamos a D el valor 10
 @SALTO
-D;JGT   // si D es mayor que cero hace un salto
+D;JGT   // si D es mayor que cero hace un salto hacia el inicio
 
 ### Pregunta 5:
+un loop se logra combinando una etiqueta  con un salto condicional o incodicional
+(LOOP)
+@contador
+ D=M
+ @FIN
+ D;JEQ     // si es 0;  sale del loop
+ @Contador
+ M=M-1
+ @LOOP
+ 0;JUMP   // vuelve al inicio
+ (FIN)
 ### Pregunta 6:
 D=M toma el valor que se encuentre en ese registro particular M=D Asigna el valor de D al Registro seleccionado
 ### Pregunta 7:

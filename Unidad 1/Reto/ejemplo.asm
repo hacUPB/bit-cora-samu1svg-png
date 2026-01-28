@@ -1,6 +1,9 @@
-(SALTO)
-@10
-D=A     
-@SALTO
-D;JGT  
-
+@contador
+ D=M
+ @FIN
+ D;JEQ     
+ @Contador
+ M=M-1
+ @LOOP
+ 0;JUMP  
+ (FIN)
