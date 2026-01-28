@@ -12,7 +12,7 @@ D;JGT
 @1
 D=M
 @0
-M=M+D
+M=D+M
 @1
 M=M+1
 @LOOP
