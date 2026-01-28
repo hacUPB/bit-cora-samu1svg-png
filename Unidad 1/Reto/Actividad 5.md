@@ -2,5 +2,6 @@
 -“Crea un programa que use un ciclo para sumar los números del 1 al 5 
 y guarde el resultado en la dirección de memoria 12.”
 
+OBS: se uso chatgpt para algunas partes del codigo que me confundian
 
 
