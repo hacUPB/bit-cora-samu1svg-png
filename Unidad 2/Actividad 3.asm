@@ -1,2 +1,7 @@
 @20496
 M=-1
+(KEYBOARD)
+@KBD
+
+@KEYBOARD
+0;JMP
