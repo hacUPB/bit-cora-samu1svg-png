@@ -1,0 +1,10 @@
+(LOOP)
+@ARR
+M=100
+(MINILOOP)
+@100
+A=1
+M=1
+@10
+D=D-A
+D;JEQ
