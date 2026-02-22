@@ -33,6 +33,10 @@ La diferencia principal es que las variables normales viven solo durante la ejec
 ## Experimento 6: modificar el segmento de heap:
 
 El programa presenta comportamiento indefinido porque intenta acceder a memoria del heap después de haber sido liberada con delete[], generando un puntero colgante.
+```.asm
+ cout << arrayHeap[0] << endl;
+
+```
 El heap requiere gestión manual de memoria, a diferencia del stack que se libera automáticamente.
 No liberar memoria dinámica produce fugas de memoria.
 Es importante usar delete[] cuando se reserva memoria con new[] para liberar correctamente todo el arreglo.
