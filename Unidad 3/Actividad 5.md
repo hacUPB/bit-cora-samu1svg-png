@@ -89,13 +89,21 @@ contador_estatico “recuerda” su valor porque es static: se inicializa una so
 
 ---
 
-## ⚠ Parte que debo completar manualmente
+## capturas
 
-- Capturas del depurador mostrando:
-  - Valores antes y después de cada llamada.
-  - Direcciones de memoria en paso por valor vs referencia.
-  - Cómo cambia contador_estatico en cada llamada.
-- Captura del breakpoint al inicio de main.
-- Evidencia visual del mapa de memoria desde la ventana Watch o Autos.
+### suma por valor
+<img width="801" height="86" alt="image" src="https://github.com/user-attachments/assets/98b715ad-8cdf-41e0-9b4f-8fce6222f71f" />
 
-Estas partes requieren ejecución en Visual Studio y no se pueden completar solo con el código.
+<img width="1049" height="98" alt="image" src="https://github.com/user-attachments/assets/e9b1c115-36c1-46c7-b77b-a920494def09" />
+## suma por referencia
+<img width="1121" height="63" alt="image" src="https://github.com/user-attachments/assets/18cb7a53-0373-4c8c-8adb-ea613c79c608" />
+
+<img width="1139" height="62" alt="image" src="https://github.com/user-attachments/assets/e8db3a39-e9ec-4e49-a405-a03d824c8d31" />
+## suma por puntero
+<img width="908" height="100" alt="image" src="https://github.com/user-attachments/assets/ce355254-a7d4-4c00-96d0-901d5133049e" />
+<img width="1008" height="79" alt="image" src="https://github.com/user-attachments/assets/d009a6f3-8902-42cc-83d8-b0f92b5df2ee" />
+# Depurador
+<img width="1092" height="487" alt="image" src="https://github.com/user-attachments/assets/f07076f6-cffe-4a25-9006-46f9b89fad07" />
+
+
+
