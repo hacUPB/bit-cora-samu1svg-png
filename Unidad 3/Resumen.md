@@ -165,5 +165,7 @@ Stack → rápido y automático
 Heap → manual y peligroso si se usa mal
 Static → vida larga, alcance corto
 
-
+Palabras claves:
+-El recolector de basura (Garbage Collector) decide cuándo destruirlo.
+-memoria contigua
 
