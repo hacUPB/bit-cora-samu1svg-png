@@ -51,6 +51,12 @@ Para arreglos dinámicos:
 int* arr = new int[5];
 delete[] arr;
 ```
+OBS: al usar en c++ new nombre siempre devuelve un puntero
+
+#### ej:
+```.asm
+punto* puntero= new punto();
+```
  #### Regla importante:
 
 new → delete
@@ -165,7 +171,15 @@ Stack → rápido y automático
 Heap → manual y peligroso si se usa mal
 Static → vida larga, alcance corto
 
-Palabras claves:
--El recolector de basura (Garbage Collector) decide cuándo destruirlo.
--memoria contigua
+#### Obs:
+ al querer ver los valores o direccion de memoria se depura-luego arriba en depurar-inspeccion rapida- usas lo que quiere monitorear y usas "&" en caso de querer ver la direccion de memoria.
 
+#### Palabras claves:
+- Garbage Collector: libera memoria automáticamente (C#).
+
+- Memoria contigua: datos almacenados uno seguido del otro.
+
+- Scope: tiempo/espacio donde una variable existe.
+ej: Main()
+
+- Ventana Locals: herramienta del depurador para ver variables en ejecución.
