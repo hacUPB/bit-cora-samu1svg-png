@@ -1,185 +1,395 @@
-# 📘 Resumen de Memoria en C++ (Stack, Heap, Globales y Static)
+# 📘 Resumen Completo – Manejo de Memoria en C++
 
-Este documento resume los conceptos clave sobre manejo de memoria en C++ vistos en los experimentos.
+Este documento resume y complementa los conceptos fundamentales sobre manejo de memoria en C++: stack, heap, variables globales, static, objetos y errores comunes.
 
 ---
 
-# 🧠 1. Segmentos de Memoria en C++
+# 🧠 1. Mapa de Memoria de un Programa
 
-Un programa en C++ se divide en diferentes segmentos de memoria:
+Un programa en C++ se divide en varios segmentos:
 
-## 🔹 Stack (Pila)
+```
++---------------------+
+|   Código (.text)    |  ← Instrucciones del programa
++---------------------+
+|   Datos (.data)     |  ← Globales inicializadas
++---------------------+
+|   BSS (.bss)        |  ← Globales no inicializadas
++---------------------+
+|   Heap              |  ← Memoria dinámica (new)
+|         ↑ crece     |
+|                     |
+|         ↓ crece     |
+|   Stack             |  ← Variables locales
++---------------------+
+```
+
+📌 Importante:
+- El **stack crece hacia abajo**
+- El **heap crece hacia arriba**
+- Si se encuentran → *Stack Overflow*
+
+---
+
+# 🔹 2. Stack (Pila)
+
 - Almacena variables locales normales.
 - Gestión automática.
 - Se libera al salir del bloque o función.
-- Más rápido pero limitado en tamaño.
+- Es rápido pero limitado en tamaño.
 
-Ejemplo:
+### Ejemplo
+
 ```cpp
 void ejemplo() {
     int x = 10; // Vive en el stack
 }
 ```
- ### Características:
 
-Se crea al entrar a la función.
+### Características
 
-Se destruye al salir.
+- Se crea al entrar a la función.
+- Se destruye al salir.
+- Se reinicia cada vez que se llama la función.
 
-Se reinicia cada vez que se llama la función.
+---
 
-## 2. Heap (Montículo)
+# 🔹 3. Heap (Montículo)
 
-Memoria dinámica.
+- Memoria dinámica.
+- Se reserva con `new`.
+- Se libera manualmente con `delete`.
+- Más flexible pero más lenta.
 
-Se reserva con new.
+### Ejemplo correcto
 
-Se libera manualmente con delete.
-
-Más flexible pero más lento.
-
- #### Ejemplo correcto:
-
-```
+```cpp
 int* ptr = new int(5);
 delete ptr;
 ```
-Si no se libera → ocurre memory leak (fuga de memoria).
 
-Para arreglos dinámicos:
-```
+Si no se libera → ocurre **Memory Leak (fuga de memoria)**.
+
+### Para arreglos dinámicos
+
+```cpp
 int* arr = new int[5];
 delete[] arr;
 ```
-OBS: al usar en c++ new nombre siempre devuelve un puntero
 
-#### ej:
-```.asm
-punto* puntero= new punto();
+📌 Regla importante:
+
+- `new` → `delete`
+- `new[]` → `delete[]`
+
+📌 `new` siempre devuelve un puntero.
+
+```cpp
+Punto* puntero = new Punto();
 ```
- #### Regla importante:
 
-new → delete
+---
 
-new[] → delete[]
+# 🔹 4. Segmento de Datos
 
- ## 3. Segmento de Datos
+Aquí viven:
 
-Aquí viven las variables globales y las variables static.
+- Variables globales
+- Variables `static`
 
-📌 .data
+## 📌 .data
 
-Variables globales inicializadas.
-```
+Globales inicializadas:
+
+```cpp
 int global = 42;
 ```
-📌 .bss
 
-Variables globales no inicializadas.
-El sistema las pone automáticamente en 0.
+## 📌 .bss
+
+Globales no inicializadas (valen 0 automáticamente):
+
+```cpp
+int global_no_init;
 ```
-int global_no_init; // Vale 0 al iniciar
-```
- ### 🔁 Variables Locales vs Locales Static
-#### 🔹 Variable Local Normal
-```
+
+---
+
+# 🔁 5. Variables Locales vs Static
+
+## 🔹 Variable Local Normal
+
+```cpp
 void f() {
     int x = 100;
 }
 ```
-Vive en el stack.
 
-Se crea al entrar.
+- Vive en el stack.
+- Se reinicia en cada llamada.
+- Se destruye al salir.
 
-Se destruye al salir.
+---
 
-Se reinicia en cada llamada.
+## 🔹 Variable Local Static
 
-##### 🔹 Variable Local Static
-```
+```cpp
 void f() {
     static int x = 100;
 }
 ```
-Se guarda en el segmento de datos.
 
-Se crea una sola vez.
+- Vive en el segmento de datos.
+- Se crea una sola vez.
+- Conserva su valor entre llamadas.
+- Su alcance sigue siendo local.
 
-Conserva su valor entre llamadas.
+📌 `static` cambia el tiempo de vida, NO el alcance.
 
-Su alcance sigue siendo local.
+---
 
-Importante:
+# 🧠 6. Ciclo de Vida de un Objeto
 
-static cambia el tiempo de vida, NO el alcance.
+## 🔹 Objeto en Stack
 
-🧩 Comparación General
-Tipo de Variable	Memoria	Tiempo de Vida	Se Reinicia	Gestión
-Local normal	Stack	Dentro función	Sí	Automática
-Local static	Datos	Todo programa	No	Automática
-Global inicializada	.data	Todo programa	No	Automática
-Global no inicializada	.bss	Todo programa	No (vale 0)	Automática
-Dinámica (new)	Heap	Hasta delete	No	Manual
-⚠ Errores Comunes
-🔹 Dangling Pointer
-
-Acceder a memoria después de hacer delete.
+```cpp
+void f() {
+    Enemigo e(100);
+}
 ```
+
+- Se reserva memoria.
+- Se llama al constructor.
+- Al salir:
+  - Se llama al destructor automáticamente.
+  - Se libera memoria.
+
+---
+
+## 🔹 Objeto en Heap
+
+```cpp
+Enemigo* e = new Enemigo(100);
+delete e;
+```
+
+- Se reserva memoria en heap.
+- Se llama constructor.
+- `delete` llama al destructor.
+- Libera memoria.
+
+Si no se hace `delete` → fuga de memoria.
+
+---
+
+# 🧩 7. ¿Qué es realmente un objeto?
+
+Un objeto es:
+
+> Un bloque contiguo de memoria que contiene sus atributos.
+
+Ejemplo:
+
+```cpp
+class Jugador {
+    int vida;
+    int ataque;
+};
+```
+
+En memoria:
+
+```
+[ vida ][ ataque ]
+```
+
+📌 Los métodos NO viven dentro del objeto.  
+Están en el segmento de código (.text).
+
+---
+
+# 🏷 8. Miembros Static en Clases
+
+```cpp
+class A {
+    static int contador;
+    int x;
+};
+```
+
+- `x` vive dentro del objeto.
+- `contador` vive en el segmento global.
+- Solo existe UNA copia compartida.
+
+---
+
+# 🧨 9. Regla de los Tres
+
+Si una clase usa:
+
+- Punteros
+- Memoria dinámica
+- Recursos externos
+
+Debe implementar:
+
+1. Destructor
+2. Constructor de copia
+3. Operador de asignación
+
+Evita:
+- Copia superficial
+- Double delete
+- Dangling pointers
+
+---
+
+# 🔁 10. Copia Superficial vs Profunda
+
+## 🔹 Copia Superficial
+
+Copia solo la dirección del puntero.
+
+```
+obj1.armas → 0x1000
+obj2.armas → 0x1000
+```
+
+Ambos apuntan al mismo lugar.
+
+---
+
+## 🔹 Copia Profunda
+
+Reserva nueva memoria y copia valores.
+
+```
+obj1.armas → 0x1000
+obj2.armas → 0x2000
+```
+
+Son independientes.
+
+---
+
+# ⚠ 11. Errores Comunes
+
+## 🔹 Dangling Pointer
+
+```cpp
 delete ptr;
 cout << *ptr; // ❌ Comportamiento indefinido
 ```
-Puede:
 
-Imprimir basura
+---
 
-Caerse el programa
+## 🔹 Memory Leak
 
-Parecer que funciona (pero está mal)
-
-🔹 Memory Leak
-
-No liberar memoria dinámica.
-```
+```cpp
 int* ptr = new int(10);
-// Falta delete ptr;
+// Falta delete
 ```
-Consecuencias:
 
-Consumo innecesario de memoria
+---
 
-Programa más lento
+## 🔹 Double Delete
 
-Posible agotamiento de memoria
+```cpp
+delete ptr;
+delete ptr; // ❌
+```
 
-🎯 Ideas Clave Para Recordar
+---
 
-Stack = automático y temporal.
+## 🔹 Puntero no inicializado
 
-Heap = manual y flexible.
+```cpp
+int* ptr;
+*ptr = 10; // ❌
+```
 
-Globales viven todo el programa.
+Siempre usar:
 
-Static conserva valor entre llamadas.
+```cpp
+int* ptr = nullptr;
+```
 
-Siempre emparejar new con delete.
+---
 
-Nunca usar memoria después de liberarla.
+## 🔹 Stack Overflow
 
-📌 Regla Mental Rápida
+Recursión infinita:
 
-Stack → rápido y automático
-Heap → manual y peligroso si se usa mal
-Static → vida larga, alcance corto
+```cpp
+void f() {
+    f();
+}
+```
 
-#### Obs:
- al querer ver los valores o direccion de memoria se depura-luego arriba en depurar-inspeccion rapida- usas lo que quiere monitorear y usas "&" en caso de querer ver la direccion de memoria.
+---
 
-#### Palabras claves:
-- Garbage Collector: libera memoria automáticamente (C#).
+# 🚀 12. Buenas Prácticas Modernas
 
-- Memoria contigua: datos almacenados uno seguido del otro.
+Evitar `new` manual cuando sea posible.
 
-- Scope: tiempo/espacio donde una variable existe.
-ej: Main()
+Usar:
 
-- Ventana Locals: herramienta del depurador para ver variables en ejecución.
+- `std::vector`
+- `std::array`
+- `std::string`
+
+O smart pointers:
+
+```cpp
+#include <memory>
+
+std::unique_ptr<Enemigo> e = std::make_unique<Enemigo>(100);
+```
+
+Ventaja:
+- Liberación automática
+- Evita fugas
+
+---
+
+# 🧠 13. Diferencia C++ vs C#
+
+| Concepto | C++ | C# |
+|----------|------|------|
+| Memoria | Manual | Automática (GC) |
+| Objetos | Stack o Heap | Heap |
+| Destructor | Manual (~Clase) | Finalizer poco usado |
+| Control | Total | Parcial |
+
+---
+
+# 🎯 Ideas Clave Finales
+
+- Stack → rápido y automático.
+- Heap → manual y peligroso si se usa mal.
+- Static → vida larga, alcance puede ser corto.
+- Si usas `new`, probablemente necesitas destructor.
+- Si tu clase tiene punteros, piensa en la Regla de los Tres.
+- Entender memoria evita crashes reales.
+
+---
+
+# 🔍 Tips de Depuración
+
+Para ver direcciones:
+
+- Usar `&variable`
+- Ventana **Locals**
+- Inspección rápida
+
+---
+
+# 🏁 Regla Mental Rápida
+
+```
+Stack  → Automático
+Heap   → Manual
+Static → Vive todo el programa
+```
+
+---
