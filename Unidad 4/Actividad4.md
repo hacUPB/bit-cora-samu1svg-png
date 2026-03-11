@@ -1,10 +1,10 @@
 ## main.cpp
 ```.asm
-#include "ofMain.h"
 #include "ofApp.h"
+#include "ofMain.h"
 
 //========================================================================
-int main( ){
+int main() {
 
 	//Use ofGLFWWindowSettings for more options like multi-monitor fullscreen
 	ofGLWindowSettings settings;
@@ -15,68 +15,80 @@ int main( ){
 
 	ofRunApp(window, std::make_shared<ofApp>());
 	ofRunMainLoop();
-
 }
+
 
 ```
 ## Codigo de ofApp.cpp
 ```.asm
 #include "ofApp.h"
+
 //--------------------------------------------------------------
 void ofApp::setup() {
 	ofBackground(0);
 	ofSetCircleResolution(60);
 }
+
 //--------------------------------------------------------------
 void ofApp::update() {
-	backgroundHue += 0.2;
-	if (backgroundHue > 255)
+
+	backgroundHue += 0.2f;
+
+	if (backgroundHue > 255) {
 		backgroundHue = 0;
-	if (ofGetMousePressed()) {
-		float x = ofGetMouseX();
-		float y = ofGetMouseY();
-		float radius = ofRandom(8, 18);
-
-		ofColor color;
-		color.setHsb(ofRandom(255), 200, 255);
-
-		float opacity = 255;
-
-		strokes.enqueue(x, y, radius, color, opacity);
 	}
-	// TODO: agregar un nuevo trazo si el mouse está presionado.
-	// Usa strokes.enqueue(x, y, radius, color, opacity);
+
+	if (!ofGetMousePressed()) return;
+
+	float mx = ofGetMouseX();
+	float my = ofGetMouseY();
+
+	float r = ofRandom(8, 18);
+
+	ofColor c;
+	c.setHsb(ofRandom(255), 200, 255);
+
+	float op = 255;
+
+	strokes.enqueue(mx, my, r, c, op);
 }
+
 //--------------------------------------------------------------
 void ofApp::draw() {
-	// Fondo con gradiente dinámico
-	ofColor color1, color2;
-	color1.setHsb(backgroundHue, 150, 240);
-	color2.setHsb(fmod(backgroundHue + 128, 255), 150, 240);
-	ofBackgroundGradient(color1, color2, OF_GRADIENT_LINEAR);
-	// TODO: dibujar los trazos almacenados en la cola.
-	Node * current = strokes.front;
-	int index = 0;
-	// Recorre los nodos desde strokes.front hasta nullptr y usa ofDrawCircle().
-	while (current != nullptr) {
-		float alpha = ofMap(index, 0, strokes.size - 1, 40, 255, true);
 
-		ofSetColor(current->color.r, current->color.g, current->color.b, alpha);
-		ofDrawCircle(current->x, current->y, current->radius);
+	ofColor c1, c2;
 
-		current = current->next;
-		index++;
+	c1.setHsb(backgroundHue, 150, 240);
+	c2.setHsb(fmod(backgroundHue + 128, 255), 150, 240);
+
+	ofBackgroundGradient(c1, c2, OF_GRADIENT_LINEAR);
+
+	Node * ptr = strokes.front;
+
+	int pos = 0;
+
+	while (ptr != nullptr) {
+
+		float alpha = ofMap(pos, 0, strokes.size - 1, 40, 255, true);
+
+		ofSetColor(ptr->color.r, ptr->color.g, ptr->color.b, alpha);
+
+		ofDrawCircle(ptr->x, ptr->y, ptr->radius);
+
+		ptr = ptr->next;
+		pos++;
 	}
 }
+
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
-	if (key == 'c') {
-		// TODO: limpiar la cola de trazos.
-		strokes.clear();
 
+	if (key == 'c') {
+		strokes.clear();
 	}
+
 	if (key == 'a') {
-		// TODO: alternar entre 50 y 100 trazos.
+
 		if (strokes.maxSize == 50) {
 			strokes.maxSize = 100;
 		} else {
@@ -86,8 +98,9 @@ void ofApp::keyPressed(int key) {
 		while (strokes.size > strokes.maxSize) {
 			strokes.dequeue();
 		}
-	} else if (key == 's') {
-		// TODO: guardar el frame actual.
+	}
+
+	else if (key == 's') {
 		ofSaveScreen("screenshot_" + ofGetTimestampString() + ".png");
 	}
 }
@@ -98,12 +111,13 @@ void ofApp::keyPressed(int key) {
 #pragma once
 #include "ofMain.h"
 
-// Nodo de la cola
 struct Node {
+
 	float x, y;
 	float radius;
 	ofColor color;
 	float opacity;
+
 	Node * next;
 
 	Node(float _x, float _y, float _radius, ofColor _color, float _opacity)
@@ -115,11 +129,12 @@ struct Node {
 		, next(nullptr) { }
 };
 
-// Implementación manual de una cola (FIFO)
 class BrushQueue {
+
 public:
 	Node * front;
 	Node * rear;
+
 	int size;
 	int maxSize;
 
@@ -132,21 +147,18 @@ public:
 	bool isEmpty();
 };
 
-// Constructor
 BrushQueue::BrushQueue(int _maxSize)
 	: front(nullptr)
 	, rear(nullptr)
 	, size(0)
-	, maxSize(_maxSize) {
-}
+	, maxSize(_maxSize) { }
 
-// Destructor
 BrushQueue::~BrushQueue() {
 	clear();
 }
 
-// Implementa aquí `enqueue()`
 void BrushQueue::enqueue(float x, float y, float radius, ofColor color, float opacity) {
+
 	Node * newNode = new Node(x, y, radius, color, opacity);
 
 	if (isEmpty()) {
@@ -164,15 +176,16 @@ void BrushQueue::enqueue(float x, float y, float radius, ofColor color, float op
 	}
 }
 
-// Implementa aquí `dequeue()`
 void BrushQueue::dequeue() {
-	if (isEmpty()) {
-		return;
-	}
 
-	Node * temp = front;
+	if (isEmpty()) return;
+
+	Node * oldFront = front;
+
 	front = front->next;
-	delete temp;
+
+	delete oldFront;
+
 	size--;
 
 	if (front == nullptr) {
@@ -180,25 +193,26 @@ void BrushQueue::dequeue() {
 	}
 }
 
-// Implementa aquí `clear()`
 void BrushQueue::clear() {
+
 	while (!isEmpty()) {
 		dequeue();
 	}
 }
 
-// Implementa aquí `isEmpty()`
 bool BrushQueue::isEmpty() {
+
 	return front == nullptr;
 }
 
 class ofApp : public ofBaseApp {
+
 public:
-	BrushQueue strokes; // cola de trazos
+	BrushQueue strokes;
 	float backgroundHue = 0;
 
 	ofApp()
-		: strokes(50) { } // Tamaño máximo inicial de la cola
+		: strokes(50) { }
 
 	void setup();
 	void update();
@@ -207,3 +221,5 @@ public:
 };
 
 ```
+## link del videito jejeje
+https://youtu.be/KuinTA4lxNw?feature=shared
