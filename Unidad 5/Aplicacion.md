@@ -443,3 +443,25 @@ ofApp::~ofApp() {
 }
 
 ```
+## Capturas de los breakpoints
+
+### en:
+```c++
+if (explosionType == 0) {
+				particles.push_back(new CircularExplosion(particles[i]->getPosition(), particles[i]->getColor()));
+} else if (explosionType == 1) {
+				particles.push_back(new RandomExplosion(particles[i]->getPosition(), particles[i]->getColor()));
+} else if (explosionType == 2) {
+				particles.push_back(new StarExplosion(particles[i]->getPosition(), particles[i]->getColor()));
+} else {
+				// NUEVA EXPLOSIÓN
+				particles.push_back(new SpiralExplosion(particles[i]->getPosition(), particles[i]->getColor()));
+}
+
+```
+## primer if 
+
+![alt text](<Captura de pantalla 2026-04-06 110418.png>)
+
+## segundo if
+![alt text](image-10.png)
