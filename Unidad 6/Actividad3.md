@@ -17,9 +17,9 @@ Para agregar una nueva partícula llamada "black_hole" intentaria lo siguiente:
 	1.	Ir a la clase ParticleFactory.
 	2.	Modificar el método createParticle.
 	3.	Agregar un nuevo caso, por ejemplo:
-  
+  ```.c++
 ParticleFactory::createParticle("black_hole");
-
+  ```
 ##  Método estático o instancia 
 
 El método createParticle es estático, lo que significa que no es necesario crear un objeto de la clase ParticleFactory para usarlo.
