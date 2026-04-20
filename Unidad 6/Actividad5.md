@@ -46,10 +46,10 @@ public:
 	ofVec2f velocity;
 	float size;
 	ofColor color;
-	// nueva implementación
+
 	float angle;
 	float angularSpeed;
-	float radius;
+
 	int direction;
 
 private:
@@ -81,7 +81,7 @@ class ParticleFactory {
 public:
 	static Particle * createParticle(const std::string & type);
 };
-class EspiralState : public State {
+class lentitudState : public State {
 public:
 	void update(Particle * particle) override;
 };
@@ -127,11 +127,8 @@ Particle::Particle()
 	velocity = ofVec2f(ofRandom(-0.5f, 0.5f), ofRandom(-0.5f, 0.5f));
 	size = ofRandom(2.0f, 5.0f);
 	color = ofColor(255);
-
-	// nueva implementación
-	angle = ofRandom(0, TWO_PI);
 	angularSpeed = ofRandom(0.02f, 0.08f);
-	radius = ofRandom(1.0f, 4.0f);
+	
 	direction = (ofRandom(1.0f) > 0.5f) ? 1 : -1;
 
 	state = new NormalState();
@@ -180,8 +177,8 @@ void Particle::onNotify(const std::string & event) {
 		setState(new StopState());
 	} else if (event == "normal") {
 		setState(new NormalState());
-	} else if (event == "espiral") {
-		setState(new EspiralState());
+	} else if (event == "lentitud") {
+		setState(new lentitudState());
 	}
 }
 
@@ -256,19 +253,12 @@ void StopState::update(Particle * particle) {
 	particle->position += particle->velocity;
 }
 
-// nuevo estado mejorado
-void EspiralState::update(Particle * particle) {
 
-	// nueva implementación
-	particle->angle += particle->angularSpeed * particle->direction;
+ void lentitudState::update(Particle * particle) {
 
-	// nueva implementación
-	float dx = cos(particle->angle) * particle->radius;
-	float dy = sin(particle->angle) * particle->radius;
-
-	// nueva implementación
-	particle->position.x += dx;
-	particle->position.y += dy;
+	// se van para la esquinita :)
+	particle->position.x += particle->angularSpeed;
+	particle->position.y += particle->angularSpeed;
 }
 
 Particle * ParticleFactory::createParticle(const std::string & type) {
@@ -331,11 +321,10 @@ void ofApp::setup() {
 		Particle * p = ParticleFactory::createParticle("orbs");
 		particles.push_back(p);
 
-		// nueva implementación
 		if (ofRandom(1.0f) > 0.5f) {
 			addObserver(p);
 		} else {
-			p->color = ofColor(100); // opcional: para distinguir
+			p->color = ofColor(100);
 		}
 	}
 }
@@ -367,12 +356,13 @@ void ofApp::keyPressed(int key) {
 		notify("normal");
 		break;
 	case 'e':
-		notify("espiral");
+		notify("lentitud");
 		break;
 	default:
 		break;
 	}
 }
+
 
 ```
 2. Explica cómo usaste el patrón Factory para esta nueva partícula.
@@ -389,13 +379,4 @@ se aplico una probabilidad 50/50 de ser observer o no en el caso de no serlo su 
 
 4. Explica cómo aplicaste el patrón State a esta nueva partícula.
 
-Para esta actividad se implementó un nuevo estado llamado EspiralState, el cual hace que las partículas se muevan en trayectorias circulares.
-
-cada partícula tiene parámetros propios como:
-
-- ángulo
-- velocidad angular
-- radio
-- dirección
-
-Esto permite que cada partícula tenga un movimiento distinto dentro del estado espiral, generando un efecto más natural y dinámico.
+Para esta actividad se implementó un nuevo estado llamado lentitudState, el cual hace que las partículas se realentizen y se dirijan al esquina inferior derecha.
