@@ -1,5 +1,5 @@
 # Codigo:
-ofApp.h:
+# ofApp.h:
 ```c++
 #pragma once
 #include "ofMain.h"
@@ -46,6 +46,11 @@ public:
 	ofVec2f velocity;
 	float size;
 	ofColor color;
+	// nueva implementación
+	float angle;
+	float angularSpeed;
+	float radius;
+	int direction;
 
 private:
 	void keepInsideWindow();
@@ -93,10 +98,11 @@ private:
 };
 
 ```
-ofApp.cpp:
+# ofApp.cpp:
 ```c++
 #include "ofApp.h"
 #include <algorithm>
+
 void Subject::addObserver(Observer * observer) {
 	if (!observer) return;
 	if (std::find(observers.begin(), observers.end(), observer) == observers.end()) {
@@ -108,17 +114,26 @@ void Subject::removeObserver(Observer * observer) {
 	if (!observer) return;
 	observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
 }
+
 void Subject::notify(const std::string & event) {
 	for (Observer * observer : observers) {
 		observer->onNotify(event);
 	}
 }
+
 Particle::Particle()
 	: state(nullptr) {
 	position = ofVec2f(ofRandomWidth(), ofRandomHeight());
 	velocity = ofVec2f(ofRandom(-0.5f, 0.5f), ofRandom(-0.5f, 0.5f));
 	size = ofRandom(2.0f, 5.0f);
 	color = ofColor(255);
+
+	// nueva implementación
+	angle = ofRandom(0, TWO_PI);
+	angularSpeed = ofRandom(0.02f, 0.08f);
+	radius = ofRandom(1.0f, 4.0f);
+	direction = (ofRandom(1.0f) > 0.5f) ? 1 : -1;
+
 	state = new NormalState();
 	state->onEnter(this);
 }
@@ -130,6 +145,7 @@ Particle::~Particle() {
 		state = nullptr;
 	}
 }
+
 void Particle::setState(State * newState) {
 	if (state) {
 		state->onExit(this);
@@ -140,18 +156,21 @@ void Particle::setState(State * newState) {
 		state->onEnter(this);
 	}
 }
+
 void Particle::update() {
 	if (state) {
 		state->update(this);
 	}
 	keepInsideWindow();
 }
+
 void Particle::draw() {
 	ofPushStyle();
 	ofSetColor(color);
 	ofDrawCircle(position, size);
 	ofPopStyle();
 }
+
 void Particle::onNotify(const std::string & event) {
 	if (event == "attract") {
 		setState(new AttractState());
@@ -161,11 +180,15 @@ void Particle::onNotify(const std::string & event) {
 		setState(new StopState());
 	} else if (event == "normal") {
 		setState(new NormalState());
+	} else if (event == "espiral") {
+		setState(new EspiralState());
 	}
 }
+
 void Particle::keepInsideWindow() {
 	const float W = static_cast<float>(ofGetWidth());
 	const float H = static_cast<float>(ofGetHeight());
+
 	if (position.x < 0.0f) {
 		position.x = 0.0f;
 		velocity.x *= -1.0f;
@@ -173,6 +196,7 @@ void Particle::keepInsideWindow() {
 		position.x = W;
 		velocity.x *= -1.0f;
 	}
+
 	if (position.y < 0.0f) {
 		position.y = 0.0f;
 		velocity.y *= -1.0f;
@@ -181,63 +205,97 @@ void Particle::keepInsideWindow() {
 		velocity.y *= -1.0f;
 	}
 }
+
 void NormalState::onEnter(Particle * particle) {
 	particle->velocity.set(ofRandom(-0.5f, 0.5f), ofRandom(-0.5f, 0.5f));
 }
+
 void NormalState::update(Particle * particle) {
 	particle->position += particle->velocity;
 }
+
 static void steer(Particle * particle, const ofVec2f & toward, float accel, float vmax, float posScale) {
 	ofVec2f dir = toward - particle->position;
 	float len = dir.length();
+
 	if (len > 1e-6f) {
 		dir /= len;
 		particle->velocity += dir * accel;
 	}
+
 	particle->velocity.limit(vmax);
 	particle->position += particle->velocity * posScale;
 }
+
 void AttractState::update(Particle * particle) {
 	ofVec2f mouse(ofGetMouseX(), ofGetMouseY());
-	steer(particle, mouse, /*accel*/ 0.05f, /*vmax*/ 3.0f, /*posScale*/ 0.2f);
+	steer(particle, mouse, 0.05f, 3.0f, 0.2f);
 }
+
 void RepelState::update(Particle * particle) {
 	ofVec2f mouse(ofGetMouseX(), ofGetMouseY());
 	ofVec2f away = particle->position - mouse;
+
 	float len = away.length();
 	if (len > 1e-6f) {
 		away /= len;
 		particle->velocity += away * 0.05f;
 	}
+
 	particle->velocity.limit(3.0f);
 	particle->position += particle->velocity * 0.2f;
 }
+
 void StopState::update(Particle * particle) {
 	particle->velocity *= 0.80f;
+
 	if (particle->velocity.lengthSquared() < 1e-4f) {
 		particle->velocity.set(0.0f, 0.0f);
 	}
+
 	particle->position += particle->velocity;
 }
+
+// nuevo estado mejorado
+void EspiralState::update(Particle * particle) {
+
+	// nueva implementación
+	particle->angle += particle->angularSpeed * particle->direction;
+
+	// nueva implementación
+	float dx = cos(particle->angle) * particle->radius;
+	float dy = sin(particle->angle) * particle->radius;
+
+	// nueva implementación
+	particle->position.x += dx;
+	particle->position.y += dy;
+}
+
 Particle * ParticleFactory::createParticle(const std::string & type) {
 	Particle * particle = new Particle();
+
 	if (type == "star") {
 		particle->size = ofRandom(2.0f, 4.0f);
 		particle->color = ofColor(255, 0, 0);
+
 	} else if (type == "shooting_star") {
 		particle->size = ofRandom(3.0f, 6.0f);
 		particle->color = ofColor(0, 255, 0);
 		particle->velocity *= 3.0f;
+
 	} else if (type == "planet") {
 		particle->size = ofRandom(5.0f, 8.0f);
 		particle->color = ofColor(0, 0, 255);
+
 	} else if (type == "orbs") {
-		particle->size = ofRandom(3.0f, 6.0f);
-		particle->color = ofColor(0,255, 255);
+		particle->size = ofRandom(5.0f, 8.0f);
+		particle->color = ofColor(0, 255, 255, 180);
 		particle->velocity *= 2.0f;
 	}
+
 	return particle;
 }
+
 ofApp::~ofApp() {
 	for (Particle * p : particles) {
 		removeObserver(p);
@@ -245,40 +303,55 @@ ofApp::~ofApp() {
 	}
 	particles.clear();
 }
+
 void ofApp::setup() {
 	ofBackground(0);
+
 	particles.reserve(100 + 5 + 10 + 25);
+
 	for (int i = 0; i < 100; ++i) {
 		Particle * p = ParticleFactory::createParticle("star");
 		particles.push_back(p);
 		addObserver(p);
 	}
+
 	for (int i = 0; i < 5; ++i) {
 		Particle * p = ParticleFactory::createParticle("shooting_star");
 		particles.push_back(p);
 		addObserver(p);
 	}
+
 	for (int i = 0; i < 10; ++i) {
 		Particle * p = ParticleFactory::createParticle("planet");
 		particles.push_back(p);
 		addObserver(p);
 	}
+
 	for (int i = 0; i < 25; ++i) {
 		Particle * p = ParticleFactory::createParticle("orbs");
 		particles.push_back(p);
-		addObserver(p);
+
+		// nueva implementación
+		if (ofRandom(1.0f) > 0.5f) {
+			addObserver(p);
+		} else {
+			p->color = ofColor(100); // opcional: para distinguir
+		}
 	}
 }
+
 void ofApp::update() {
 	for (Particle * p : particles) {
 		p->update();
 	}
 }
+
 void ofApp::draw() {
 	for (Particle * p : particles) {
 		p->draw();
 	}
 }
+
 void ofApp::keyPressed(int key) {
 	switch (key) {
 	case 's':
@@ -293,15 +366,36 @@ void ofApp::keyPressed(int key) {
 	case 'n':
 		notify("normal");
 		break;
-	default:
-		break;
-	case 'E':
+	case 'e':
 		notify("espiral");
+		break;
+	default:
 		break;
 	}
 }
 
 ```
 2. Explica cómo usaste el patrón Factory para esta nueva partícula.
+
+Para esta actividad se añadió un nuevo tipo de partícula llamado "orbs", agregando un nuevo caso dentro del método createParticle:
+
+- Se definió un tamaño mayor
+- Se asignó un color cian
+- Se aumentó su velocidad
+
 3. Describe cómo implementaste el patrón Observer para esta nueva partícula.
+
+se aplico una probabilidad 50/50 de ser observer o no en el caso de no serlo su color cambia a gris y no reacciona a ninguno de los estados 
+
 4. Explica cómo aplicaste el patrón State a esta nueva partícula.
+
+Para esta actividad se implementó un nuevo estado llamado EspiralState, el cual hace que las partículas se muevan en trayectorias circulares.
+
+cada partícula tiene parámetros propios como:
+
+- ángulo
+- velocidad angular
+- radio
+- dirección
+
+Esto permite que cada partícula tenga un movimiento distinto dentro del estado espiral, generando un efecto más natural y dinámico.
