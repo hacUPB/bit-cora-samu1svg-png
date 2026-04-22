@@ -12,8 +12,6 @@
 
 # Diagrama de Estados – Particle (Patrón State)
 
-## Diagrama
-
 ```
                 (n)
              ┌──────────────┐
