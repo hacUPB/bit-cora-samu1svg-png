@@ -82,3 +82,21 @@ tomar la posición del vértice
 transformarla
 decidir dónde aparece en pantalla
 
+1. Escribe un resumen en tus propias palabras de lo que se necesita para dibujar un triángulo en OpenGL.
+
+Para dibujar un triangulo en OpenGL primero toca crear una ventana y un contexto con GLFW porque sin eso OpenGL ni siquiera sabe donde dibujar. Luego se crean los vertices del triangulo en un arreglo y esos datos se mandan a la GPU usando un VBO. Despues se usa un VAO para decirle a OpenGL como leer esos datos. Tambien toca usar shaders porque en OpenGL moderno practicamente todo depende de ellos. Ya luego en el game loop se limpia la pantalla, se activa el shader y el VAO y finalmente se dibuja el triangulo con glDrawArrays. Honestamente son demasiadas cosas solo para un triangulo todo jodido.
+
+2. Escribe un resumen en tus propias palabras de lo que necesitas para poder usar un shader en OpenGL.
+
+Para usar shaders en OpenGL primero toca escribir el vertex shader y el fragment shader. El vertex shader se encarga de la posicion de los vertices y el fragment shader decide el color de los fragmentos o pixeles. Luego esos shaders se compilan y se unen en un shader program para que la GPU los pueda usar. Tambien toca conectar los atributos de los vertices con el shader usando el VAO y glVertexAttribPointer. Basicamente el shader es como un pequeño programa que corre directamente en la GPU y controla parte de como se dibuja todo.
+
+
+### Implementa el código anterior en tu máquina y captura pantalla del resultado. Pero antes de hacerlo trata de predecir qué va a pasar.
+
+inicialmente esperaba que el triangulo reaccionara de forma diferente a la imagen original, algo tipo cambia de color y tiene desplazamiento, pero lei el codigo por encima y no  profundice ya luego vi que cada shader enrealidad solo genero una posicion en base a color o a offset usando sus valores de posicion por eso aparecen 3 triangulos 
+
+![alt text](<Captura de pantalla 2026-05-10 225517.png>)
+
+
+
+
