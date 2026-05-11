@@ -14,6 +14,8 @@ pequeño
 pasa eso porque le estamos especificando en que parte puede dibujar 
 
 ## Resumen
+https://excalidraw.com/#json=-NhuNELrsHW_PvQQUgh1v,w7ThWZfCI3MsVtMlz2Qykg
+
 ###  ¿Qué es el contexto OpenGL?
 -el lugar activo donde trabaja el OpenGL
 - todo lo que necesita se guarda ahi y demas es donde se conecta con la ventana
