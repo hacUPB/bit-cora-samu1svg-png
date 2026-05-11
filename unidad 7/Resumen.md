@@ -1,13 +1,13 @@
 ===============================
 🧠 RESUMEN OPENGL (TRIÁNGULO SIMPLE)
 
-🔷 IDEA GENERAL
+## 🔷 IDEA GENERAL
 
 OpenGL es una API (lenguaje) que se usa para decirle a la GPU qué dibujar.
 La GPU es la que realmente hace el trabajo pesado y dibuja en pantalla.
 
 ===============================
-🪟 GLFW
+## 🪟 GLFW
 
 Crea la ventana
 Maneja teclado y mouse
@@ -17,7 +17,7 @@ Ventaja:
 funciona en distintos sistemas y simplifica todo
 
 ===============================
-🧠 CONTEXTO OPENGL
+## 🧠 CONTEXTO OPENGL
 
 Es el "espacio de trabajo" de OpenGL.
 
@@ -34,14 +34,14 @@ Se activa con:
 glfwMakeContextCurrent(window);
 
 ===============================
-🧱 opengl32.lib
+## 🧱 opengl32.lib
 
 Permite iniciar OpenGL en Windows
 Solo soporta funciones viejas (1.1)
 Se usa en compilación
 
 ===============================
-⚡ GLAD
+## ⚡ GLAD
 
 Carga funciones modernas de OpenGL desde los drivers
 Se usa en ejecución
@@ -49,7 +49,7 @@ Se usa en ejecución
 Sin GLAD → no puedes usar OpenGL moderno
 
 ===============================
-🧮 GLM
+## 🧮 GLM
 
 Librería de matemáticas
 Maneja vectores y matrices
@@ -59,7 +59,7 @@ Solo usa .hpp
 (no necesita .lib ni .dll)
 
 ===============================
-🧩 GPU Y DRIVERS
+## 🧩 GPU Y DRIVERS
 
 GPU:
 
@@ -76,7 +76,7 @@ Flujo:
 código → OpenGL → drivers → GPU → framebuffer
 
 ===============================
-🖼️ FRAMEBUFFER
+## 🖼️ FRAMEBUFFER
 
 Memoria donde la GPU dibuja antes de mostrar en pantalla
 
@@ -85,7 +85,7 @@ Es como una hoja donde se pinta la imagen
 Luego se muestra en el monitor
 
 ===============================
-📐 VIEWPORT
+## 📐 VIEWPORT
 
 Define en qué parte del framebuffer se dibuja
 
@@ -98,14 +98,14 @@ más grande → puede recortarse
 cambia posición → dibujo se mueve
 
 ===============================
-🔁 CALLBACK RESIZE
+## 🔁 CALLBACK RESIZE
 
 glfwSetFramebufferSizeCallback(window, callback);
 
 Ajusta el viewport cuando cambia el tamaño de la ventana
 
 ===============================
-🔷 VBO (Vertex Buffer Object)
+## 🔷 VBO (Vertex Buffer Object)
 
 Guarda datos en la GPU
 
@@ -117,7 +117,7 @@ offset
 texturas
 
 ===============================
-🔶 VAO (Vertex Array Object)
+## 🔶 VAO (Vertex Array Object)
 
 Define cómo OpenGL interpreta los datos del VBO
 
@@ -133,7 +133,7 @@ VBO → datos
 VAO → cómo leerlos
 
 ===============================
-🧩 ATRIBUTOS DE VÉRTICES
+## 🧩 ATRIBUTOS DE VÉRTICES
 
 Son datos individuales de cada vértice.
 
@@ -149,7 +149,7 @@ Se configuran con:
 glVertexAttribPointer()
 
 ===============================
-🧠 glVertexAttribPointer
+## 🧠 glVertexAttribPointer
 
 Le explica a OpenGL:
 
@@ -164,7 +164,7 @@ color → 3 floats
 offset → 2 floats
 
 ===============================
-🔓 glEnableVertexAttribArray
+## 🔓 glEnableVertexAttribArray
 
 Activa un atributo específico.
 
@@ -178,7 +178,7 @@ Si no se activa:
 OpenGL ignora ese atributo.
 
 ===============================
-🎨 SHADER PROGRAM
+## 🎨 SHADER PROGRAM
 
 Programas que corren en la GPU.
 
@@ -187,7 +187,7 @@ Definen cómo se procesan los datos.
 Son esenciales en OpenGL moderno.
 
 ===============================
-🟦 VERTEX SHADER
+## 🟦 VERTEX SHADER
 
 Shader que procesa cada vértice.
 
@@ -202,7 +202,7 @@ Siempre debe asignar:
 gl_Position
 
 ===============================
-🟥 FRAGMENT SHADER
+## 🟥 FRAGMENT SHADER
 
 Shader que procesa fragmentos/píxeles.
 
@@ -214,7 +214,7 @@ sombras
 efectos visuales
 
 ===============================
-🧩 PIPELINE PROGRAMABLE
+## 🧩 PIPELINE PROGRAMABLE
 
 En OpenGL moderno puedes programar partes del pipeline usando shaders.
 
@@ -231,7 +231,7 @@ más rendimiento
 más efectos visuales
 
 ===============================
-🔺 DIBUJO (glDrawArrays)
+## 🔺 DIBUJO (glDrawArrays)
 
 glDrawArrays(mode, first, count);
 
@@ -251,7 +251,7 @@ count = 2 → no forma triángulo
 count = 4 → comportamiento raro
 
 ===============================
-🔁 GAME LOOP
+## 🔁 GAME LOOP
 
 Se repite constantemente:
 
@@ -265,7 +265,7 @@ Aunque algunas cosas podrían configurarse antes,
 se repiten por flexibilidad.
 
 ===============================
-🔄 DOUBLE BUFFER (SwapBuffers)
+## 🔄 DOUBLE BUFFER (SwapBuffers)
 
 glfwSwapBuffers(window);
 
@@ -281,7 +281,7 @@ la imagen no se actualiza
 no ves cambios
 
 ===============================
-⚡ VSYNC
+## ⚡ VSYNC
 
 Sincroniza FPS con el monitor.
 
@@ -296,7 +296,7 @@ estático → casi no afecta
 dinámico → se rompe la imagen
 
 ===============================
-🆚 OPENGL LEGACY VS MODERNO
+## 🆚 OPENGL LEGACY VS MODERNO
 
 Legacy:
 
@@ -313,14 +313,14 @@ más rápido
 más flexible
 
 ===============================
-🧠 RASTERIZACIÓN
+## 🧠 RASTERIZACIÓN
 
 Proceso donde la GPU convierte figuras
 (triángulos, líneas, etc.)
 en fragmentos/píxeles.
 
 ===============================
-🧩 FRAGMENTOS
+## 🧩 FRAGMENTOS
 
 Un fragmento es un candidato a píxel.
 
@@ -331,21 +331,21 @@ puede fallar depth test
 puede mezclarse
 
 ===============================
-🧱 Z-BUFFER
+## 🧱 Z-BUFFER
 
 Memoria que guarda profundidad.
 
 Sirve para saber qué objeto está más cerca de la cámara.
 
 ===============================
-🔍 DEPTH TEST
+## 🔍 DEPTH TEST
 
 Compara profundidades usando el Z-buffer.
 
 Evita que objetos lejanos se dibujen encima de objetos cercanos.
 
 ===============================
-〰️ ALIASING
+## 〰️ ALIASING
 
 Efecto de bordes "dentados".
 
@@ -353,14 +353,14 @@ Pasa porque los píxeles son cuadrados
 y las diagonales no encajan perfecto.
 
 ===============================
-✨ ANTI-ALIASING
+## ✨ ANTI-ALIASING
 
 Técnicas para suavizar bordes.
 
 Hace que los objetos se vean menos pixelados.
 
 ===============================
-💡 ILUMINACIÓN
+## 💡 ILUMINACIÓN
 
 Normalmente se calcula en el fragment shader.
 
@@ -373,14 +373,14 @@ Con iluminación:
 más realismo.
 
 ===============================
-💡 MUCHAS LUCES
+## 💡 MUCHAS LUCES
 
 Más luces = más cálculos para la GPU.
 
 Puede bajar rendimiento si hay demasiadas.
 
 ===============================
-🌐 UNIFORMS
+## 🌐 UNIFORMS
 
 Variables globales dentro de shaders.
 
@@ -395,12 +395,12 @@ color
 posición global
 
 ===============================
-📍 glGetUniformLocation
+## 📍 glGetUniformLocation
 
 Busca la ubicación de un uniform dentro del shader.
 
 ===============================
-📤 glUniform
+## 📤 glUniform
 
 Envía datos desde C++ al shader.
 
@@ -411,7 +411,7 @@ glUniform2f → vec2
 glUniform4f → vec4
 
 ===============================
-🖱️ COORDENADAS DEL MOUSE
+## 🖱️ COORDENADAS DEL MOUSE
 
 El mouse trabaja en píxeles.
 
@@ -426,7 +426,7 @@ OpenGL usa NDC:
 Por eso hay que convertir coordenadas.
 
 ===============================
-📏 NORMALIZACIÓN
+## 📏 NORMALIZACIÓN
 
 Convierte coordenadas del mouse:
 
@@ -441,7 +441,7 @@ Ejemplo:
 x = xpos / width;
 
 ===============================
-🎯 NDC (Normalized Device Coordinates)
+## 🎯 NDC (Normalized Device Coordinates)
 
 Sistema de coordenadas de OpenGL.
 
@@ -457,7 +457,7 @@ Vertical:
 -1 abajo
 
 ===============================
-🔄 CONVERSIÓN A NDC
+## 🔄 CONVERSIÓN A NDC
 
 Para pasar de 0→1 a -1→1:
 
@@ -470,7 +470,7 @@ Para Y:
 porque el eje Y está invertido.
 
 ===============================
-⏱️ glfwGetTime()
+## ⏱️ glfwGetTime()
 
 Devuelve el tiempo en segundos desde que GLFW inició.
 
@@ -481,7 +481,7 @@ movimientos
 cambios dinámicos
 
 ===============================
-〰️ sin(time)
+## 〰️ sin(time)
 
 Genera valores cíclicos suaves entre:
 
@@ -494,7 +494,7 @@ colores pulsantes
 movimiento suave
 
 ===============================
-🎨 COLOR PULSANTE
+## 🎨 COLOR PULSANTE
 
 Ejemplo:
 
@@ -511,7 +511,7 @@ en:
 perfecto para colores.
 
 ===============================
-🎯 IDEA FINAL
+## 🎯 IDEA FINAL
 
 Tú → escribes código
 OpenGL → da instrucciones
